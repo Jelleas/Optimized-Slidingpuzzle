@@ -79,7 +79,7 @@ public class Solver {
 
     private long swap(long puzzle, int zeroLoc, int otherLoc) {
         // find the value in the puzzle to be swapped
-        long val = ((puzzle << (64 - otherLoc * 4)) >>> 60);
+        long val = (puzzle << (64 - otherLoc * 4)) >>> 60;
 
         // swap the value
         long newPuzzle = (puzzle - (val << ((otherLoc - 1) * 4))) | (val << (zeroLoc - 1) * 4);
