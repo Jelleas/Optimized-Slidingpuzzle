@@ -82,7 +82,7 @@ public class Solver {
         long val = (puzzle << (64 - otherLoc * 4)) >>> 60;
 
         // swap the value
-        long newPuzzle = (puzzle - (val << ((otherLoc - 1) * 4))) | (val << (zeroLoc - 1) * 4);
+        long newPuzzle = puzzle - (val << ((otherLoc - 1) * 4)) + (val << (zeroLoc - 1) * 4);
 
         // place the new location of the zero in the puzzle, and return
         return ((newPuzzle << 28) >>> 28) | (((long)otherLoc) << 36);
