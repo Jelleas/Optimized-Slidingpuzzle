@@ -25,7 +25,7 @@ public class Main {
         }
 
         System.out.println("Found " + puzzleStorage.size() + " puzzles");
-        System.out.println("Fastest trial in ms: " + Collections.min(timings) + ".");
+        System.out.println("Fastest trial in " + Collections.min(timings) + " ms.");
     }
 
     public static void print(long puzzle) {
