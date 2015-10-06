@@ -85,6 +85,6 @@ public class Solver {
         long newPuzzle = puzzle - (val << ((otherLoc - 1) * 4)) + (val << (zeroLoc - 1) * 4);
 
         // place the new location of the zero in the puzzle, and return
-        return ((newPuzzle << 28) >>> 28) | (((long)otherLoc) << 36);
+        return ((newPuzzle << 28) >>> 28) + (((long)otherLoc) << 36);
     }
 }
