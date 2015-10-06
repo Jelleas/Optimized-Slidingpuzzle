@@ -24,7 +24,6 @@ public class Main {
             timings.add(endTime - startTime);
         }
 
-
         System.out.println("Found " + puzzleStorage.size() + " puzzles");
         System.out.println("Fastest trial in ms: " + Collections.min(timings) + ".");
     }
@@ -52,15 +51,15 @@ public class Main {
                 throw new IllegalArgumentException(
                         "Array `values` must contain no duplicates and only values of 0 to 8.");
 
-        long nullPosition = 0;
+        long zeroPosition = 0;
 
         for (int i = 0; i < values.length; i++)
             if (values[i] == 0) {
-                nullPosition = (9 - i);
+                zeroPosition = (9 - i);
                 break;
             }
 
-        long puzzle = nullPosition << 36;
+        long puzzle = zeroPosition << 36;
 
         for (int i = 0; i < 9; i++) {
             puzzle += ((long)values[i]) << ((8 - i) * 4);
