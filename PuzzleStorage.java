@@ -1,5 +1,6 @@
 package com.company;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -16,16 +17,25 @@ public class PuzzleStorage implements Iterable<Long>{
         }
 
         public boolean hasNext() {
+            long result = 0;
+
+            // find if next element exists, leave cursor there.
+            while (result == 0 && cursor < end) {
+                result = puzzleStorage.puzzles[cursor];
+                if (result == 0)
+                    cursor++;
+            }
+
             return cursor < end;
         }
 
         public Long next() {
-            if (!hasNext()) {
-                throw new NoSuchElementException();
-            }
-
             long result = 0;
             while (result == 0) {
+                if (!hasNext()) {
+                    throw new NoSuchElementException();
+                }
+
                 result = puzzleStorage.puzzles[cursor];
                 cursor++;
             }
@@ -52,15 +62,15 @@ public class PuzzleStorage implements Iterable<Long>{
 
     public boolean add(long puzzle, long predecessor) {
         int index = index(puzzle);
-        boolean wasEmpty = puzzles[index] == 0;
+
+        if (puzzles[index] != 0) {
+            return false;
+        }
 
         puzzles[index] = puzzle;
         predecessors[index] = predecessor;
-
-        if (wasEmpty)
-            numberOfElements++;
-
-        return wasEmpty;
+        numberOfElements++;
+        return true;
     }
 
     public long get(long puzzle) {
@@ -132,6 +142,31 @@ public class PuzzleStorage implements Iterable<Long>{
         }
 
         return index;
+    }
+
+    public ArrayList<Long> getMaxDepthPuzzles() {
+        ArrayList<Long> maxPuzzles = new ArrayList<>();
+        long maxDepth = 0;
+
+        for (long p : this) {
+            long cursorPuzzle = p;
+            int depth = 0;
+
+            while (this.getPredecessor(cursorPuzzle) != 0) {
+                cursorPuzzle = this.getPredecessor(cursorPuzzle);
+                depth++;
+            }
+
+            if (depth > maxDepth) {
+                maxPuzzles = new ArrayList<>();
+                maxDepth = depth;
+            }
+
+            if (depth == maxDepth)
+                maxPuzzles.add(p);
+        }
+
+        return maxPuzzles;
     }
 
     public int size() {

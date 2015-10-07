@@ -7,10 +7,11 @@ import java.util.Collections;
 public class Main {
     public static void main(String[] args) {
         long puzzle = getPuzzle(new int[]{8, 7, 6, 5, 4, 3, 2, 1, 0});
+
         System.out.println("Starting with: ");
         print(puzzle);
 
-        int nTrials = 100;
+        int nTrials = 1;
         System.out.println("Running " + nTrials + " trials, exploring the entire state space each time");
 
         PuzzleStorage puzzleStorage = null;
@@ -25,6 +26,7 @@ public class Main {
         }
 
         System.out.println("Found " + puzzleStorage.size() + " puzzles");
+        System.out.println("Found " + puzzleStorage.getMaxDepthPuzzles().size() + " puzzles at max depth.");
         System.out.println("Fastest trial in " + Collections.min(timings) + " ms.");
     }
 
