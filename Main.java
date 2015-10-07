@@ -11,7 +11,7 @@ public class Main {
         System.out.println("Starting with: ");
         print(puzzle);
 
-        int nTrials = 1;
+        int nTrials = 100;
         System.out.println("Running " + nTrials + " trials, exploring the entire state space each time");
 
         PuzzleStorage puzzleStorage = null;
@@ -25,8 +25,12 @@ public class Main {
             timings.add(endTime - startTime);
         }
 
+        ArrayList<Long> maxDepthPuzzles = puzzleStorage.getMaxDepthPuzzles();
+
         System.out.println("Found " + puzzleStorage.size() + " puzzles");
-        System.out.println("Found " + puzzleStorage.getMaxDepthPuzzles().size() + " puzzles at max depth.");
+        System.out.println("Found the following " + maxDepthPuzzles.size() + " puzzles at max depth: ");
+        for (Long p : maxDepthPuzzles)
+            print(p);
         System.out.println("Fastest trial in " + Collections.min(timings) + " ms.");
     }
 
