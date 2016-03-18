@@ -11,27 +11,24 @@ public class Puzzle {
         representation = getRepresentation(values);
     }
 
-    public int piece(int index) {
-        return (int)((representation << (64 - (index) * 4)) >>> 60);
+    public Puzzle moveUp() {
+        int zeroLoc = zeroLocation();
+        return zeroLoc < 7 ? swap(zeroLoc, zeroLoc + 3) : null;
     }
 
-    public int zeroLocation() {
-        return (int)(representation >>> 36);
+    public Puzzle moveDown() {
+        int zeroLoc = zeroLocation();
+        return zeroLoc > 3 ? swap(zeroLoc, zeroLoc - 3) : null;
     }
 
-    public Puzzle swap(int otherLoc) {
-        return swap(zeroLocation(), otherLoc);
+    public Puzzle moveLeft() {
+        int zeroLoc = zeroLocation();
+        return (zeroLoc - 1) % 3 > 0 ? swap(zeroLoc, zeroLoc - 1) : null;
     }
 
-    public Puzzle swap(int zeroLoc, int otherLoc) {
-        // find the value in the puzzle to be swapped
-        long val = piece(otherLoc);
-
-        // swap the value
-        long newPuzzle = representation - (val << ((otherLoc - 1) * 4)) + (val << (zeroLoc - 1) * 4);
-
-        // place the new location of the zero in the puzzle, and return
-        return new Puzzle(((newPuzzle << 28) >>> 28) + (((long)otherLoc) << 36));
+    public Puzzle moveRight() {
+        int zeroLoc = zeroLocation();
+        return (zeroLoc - 1) % 3 < 2 ? swap(zeroLoc, zeroLoc + 1) : null;
     }
 
     @Override
@@ -70,6 +67,25 @@ public class Puzzle {
         }
 
         return repr + piece(1);
+    }
+
+    private int piece(int index) {
+        return (int)((representation << (64 - (index) * 4)) >>> 60);
+    }
+
+    private int zeroLocation() {
+        return (int)(representation >>> 36);
+    }
+
+    private Puzzle swap(int zeroLoc, int otherLoc) {
+        // find the value in the puzzle to be swapped
+        long val = piece(otherLoc);
+
+        // swap the value
+        long newPuzzle = representation - (val << ((otherLoc - 1) * 4)) + (val << (zeroLoc - 1) * 4);
+
+        // place the new location of the zero in the puzzle, and return
+        return new Puzzle(((newPuzzle << 28) >>> 28) + (((long)otherLoc) << 36));
     }
 
     private long getRepresentation(int[] values) {
