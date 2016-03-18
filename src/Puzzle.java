@@ -1,7 +1,7 @@
 import java.util.Arrays;
 
 public class Puzzle {
-    public final long representation;
+    private final long representation;
 
     public Puzzle(long puzzle) {
         representation = puzzle;
@@ -13,16 +13,6 @@ public class Puzzle {
 
     public int piece(int index) {
         return (int)((representation << (64 - (index) * 4)) >>> 60);
-    }
-
-    public void print() {
-        String repr = "";
-
-        for (int i = 9; i >= 1; i--) {
-            repr += ((representation << (64 - i * 4)) >>> 60) + ", ";
-        }
-
-        System.out.println(repr);
     }
 
     public int zeroLocation() {
@@ -42,6 +32,17 @@ public class Puzzle {
 
         // place the new location of the zero in the puzzle, and return
         return new Puzzle(((newPuzzle << 28) >>> 28) + (((long)otherLoc) << 36));
+    }
+
+    @Override
+    public String toString() {
+        String repr = "";
+
+        for (int i = 9; i >= 1; i--) {
+            repr += piece(i) + ", ";
+        }
+
+        return repr;
     }
 
     private long getRepresentation(int[] values) {
