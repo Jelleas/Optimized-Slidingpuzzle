@@ -29,10 +29,6 @@ public class Main {
             System.out.println(p);
         System.out.println("Fastest trial in " + Collections.min(timings) + " ms.");
     }
-
-
-
-
 }
 
 

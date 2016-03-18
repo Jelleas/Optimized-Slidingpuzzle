@@ -36,7 +36,6 @@ public class Puzzle {
         return o instanceof Puzzle && ((Puzzle) o).representation == representation;
     }
 
-
     // thanks to: http://www.geekviewpoint.com/java/numbers/permutation_index
     @Override
     public int hashCode() {
