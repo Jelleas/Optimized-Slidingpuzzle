@@ -83,24 +83,8 @@ public class PuzzleStorage implements Iterable<Puzzle>{
         return puzzles[index(puzzle)] != null;
     }
 
-    // thanks to: http://www.geekviewpoint.com/java/numbers/permutation_index
     private int index(Puzzle puzzle) {
-        int index = 0;
-        int position = 2;
-        int factor = 1;
-        for (int p = 9 - 1; p > 0; p--) {
-            int piece = puzzle.piece(p);
-            int successors = 0;
-            for (int q = p + 1; q < 10; q++) {
-                if (piece > puzzle.piece(q)) {
-                    successors++;
-                }
-            }
-            index += (successors * factor);
-            factor *= position;
-            position++;
-        }
-        return index;
+        return puzzle.hashCode();
     }
 
     public ArrayList<Puzzle> getMaxDepthPuzzles() {

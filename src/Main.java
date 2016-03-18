@@ -7,7 +7,7 @@ public class Main {
 
         System.out.println("Starting with: " + puzzle);
 
-        int nTrials = 1000;
+        int nTrials = 100;
         System.out.println("Running " + nTrials + " trials, exploring the entire state space each time");
 
         PuzzleStorage puzzleStorage = null;

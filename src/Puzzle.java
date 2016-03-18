@@ -35,6 +35,33 @@ public class Puzzle {
     }
 
     @Override
+    public boolean equals(Object o) {
+        return o instanceof Puzzle && ((Puzzle) o).representation == representation;
+    }
+
+
+    // thanks to: http://www.geekviewpoint.com/java/numbers/permutation_index
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        int position = 2;
+        int factor = 1;
+        for (int p = 9 - 1; p > 0; p--) {
+            int piece = piece(p);
+            int successors = 0;
+            for (int q = p + 1; q < 10; q++) {
+                if (piece > piece(q)) {
+                    successors++;
+                }
+            }
+            hash += (successors * factor);
+            factor *= position;
+            position++;
+        }
+        return hash;
+    }
+
+    @Override
     public String toString() {
         String repr = "";
 
