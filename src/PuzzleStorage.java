@@ -15,7 +15,7 @@ public class PuzzleStorage implements Iterable<Puzzle>{
         }
 
         public boolean hasNext() {
-            Puzzle result = null;
+            PuzzlePredeccesorPair result = null;
 
             // find if next element exists, leave cursor there.
             while (result == null && cursor < end) {
@@ -34,28 +34,32 @@ public class PuzzleStorage implements Iterable<Puzzle>{
                     throw new NoSuchElementException();
                 }
 
-                result = puzzleStorage.puzzles[cursor];
+                result = puzzleStorage.puzzles[cursor].puzzle;
                 cursor++;
             }
 
             return result;
         }
+    }
 
-        public void remove() {
-            throw new UnsupportedOperationException();
+    private class PuzzlePredeccesorPair {
+        final Puzzle puzzle;
+        final Puzzle predecessor;
+
+        public PuzzlePredeccesorPair(Puzzle puzzle, Puzzle predecessor) {
+            this.puzzle = puzzle;
+            this.predecessor = predecessor;
         }
     }
 
     // There cannot exist more than 9! puzzles
     private final int maxNumPuzzles = 362880;
 
-    private Puzzle[] puzzles;
-    private Puzzle[] predecessors;
+    private PuzzlePredeccesorPair[] puzzles;
     private int numberOfElements;
 
     public PuzzleStorage() {
-        puzzles = new Puzzle[maxNumPuzzles];
-        predecessors = new Puzzle[maxNumPuzzles];
+        puzzles = new PuzzlePredeccesorPair[maxNumPuzzles];
     }
 
     public boolean add(Puzzle puzzle, Puzzle predecessor) {
@@ -65,18 +69,17 @@ public class PuzzleStorage implements Iterable<Puzzle>{
             return false;
         }
 
-        puzzles[index] = puzzle;
-        predecessors[index] = predecessor;
+        puzzles[index] = new PuzzlePredeccesorPair(puzzle, predecessor);
         numberOfElements++;
         return true;
     }
 
     public Puzzle get(Puzzle puzzle) {
-        return puzzles[index(puzzle)];
+        return puzzles[index(puzzle)].puzzle;
     }
 
     public Puzzle getPredecessor(Puzzle puzzle) {
-        return predecessors[index(puzzle)];
+        return puzzles[index(puzzle)].predecessor;
     }
 
     public boolean contains(Puzzle puzzle) {
