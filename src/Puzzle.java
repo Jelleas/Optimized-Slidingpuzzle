@@ -38,11 +38,11 @@ public class Puzzle {
     public String toString() {
         String repr = "";
 
-        for (int i = 9; i >= 1; i--) {
+        for (int i = 9; i > 1; i--) {
             repr += piece(i) + ", ";
         }
 
-        return repr;
+        return repr + piece(1);
     }
 
     private long getRepresentation(int[] values) {
