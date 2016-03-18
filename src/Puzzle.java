@@ -3,12 +3,12 @@ import java.util.Arrays;
 public class Puzzle {
     private final long representation;
 
-    public Puzzle(long puzzle) {
-        representation = puzzle;
-    }
-
     public Puzzle(int[] values) {
         representation = getRepresentation(values);
+    }
+
+    private Puzzle(long puzzle) {
+        representation = puzzle;
     }
 
     public Puzzle moveUp() {
