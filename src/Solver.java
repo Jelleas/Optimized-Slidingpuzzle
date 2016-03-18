@@ -9,7 +9,7 @@ public class Solver {
         unvisited = new LinkedList<>();
     }
 
-    public static PuzzleStorage solve (Puzzle puzzleToSolve) {
+    public static PuzzleStorage solve(Puzzle puzzleToSolve) {
         Solver s = new Solver();
         s.unvisited.add(puzzleToSolve);
         s.puzzleStorage.add(puzzleToSolve, null);
