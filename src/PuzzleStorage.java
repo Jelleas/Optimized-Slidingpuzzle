@@ -74,11 +74,7 @@ public class PuzzleStorage implements Iterable<Puzzle>{
         return true;
     }
 
-    public Puzzle get(Puzzle puzzle) {
-        return puzzles[index(puzzle)].puzzle;
-    }
-
-    public Puzzle getPredecessor(Puzzle puzzle) {
+    public Puzzle predecessor(Puzzle puzzle) {
         return puzzles[index(puzzle)].predecessor;
     }
 
@@ -90,7 +86,7 @@ public class PuzzleStorage implements Iterable<Puzzle>{
         return puzzle.hashCode();
     }
 
-    public ArrayList<Puzzle> getMaxDepthPuzzles() {
+    public ArrayList<Puzzle> maxDepthPuzzles() {
         ArrayList<Puzzle> maxPuzzles = new ArrayList<>();
         long maxDepth = 0;
 
@@ -98,8 +94,8 @@ public class PuzzleStorage implements Iterable<Puzzle>{
             Puzzle cursorPuzzle = p;
             int depth = 0;
 
-            while (this.getPredecessor(cursorPuzzle) != null) {
-                cursorPuzzle = this.getPredecessor(cursorPuzzle);
+            while (predecessor(cursorPuzzle) != null) {
+                cursorPuzzle = predecessor(cursorPuzzle);
                 depth++;
             }
 

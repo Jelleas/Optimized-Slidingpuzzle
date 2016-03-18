@@ -21,7 +21,7 @@ public class Main {
             timings.add(endTime - startTime);
         }
 
-        ArrayList<Puzzle> maxDepthPuzzles = puzzleStorage.getMaxDepthPuzzles();
+        ArrayList<Puzzle> maxDepthPuzzles = puzzleStorage.maxDepthPuzzles();
 
         System.out.println("Found " + puzzleStorage.size() + " puzzles");
         System.out.println("Found the following " + maxDepthPuzzles.size() + " puzzles at max depth: ");
