@@ -1,5 +1,3 @@
-package com.company;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -85,62 +83,24 @@ public class PuzzleStorage implements Iterable<Long>{
         return puzzles[index(puzzle)] != 0;
     }
 
+    // thanks to: http://www.geekviewpoint.com/java/numbers/permutation_index
     private int index(long puzzle) {
-        int seen0 = 0;
-        int seen1 = 0;
-        int seen2 = 0;
-        int seen3 = 0;
-        int seen4 = 0;
-        int seen5 = 0;
-        int seen6 = 0;
-        int seen7 = 0;
-
-        int product = 1;
         int index = 0;
-        for (int i = 1; i < 9; i++) {
-            int val = (int)((puzzle << (64 - i * 4)) >>> 60);
-
-            switch (val) {
-                case 0:
-                    seen0 = 1;
-                    break;
-                case 1:
-                    seen1 = 1;
-                    val -= seen0;
-                    break;
-                case 2:
-                    seen2 = 1;
-                    val -= seen0 + seen1;
-                    break;
-                case 3:
-                    seen3 = 1;
-                    val -= seen0 + seen1 + seen2;
-                    break;
-                case 4:
-                    seen4 = 1;
-                    val -= seen0 + seen1 + seen2 + seen3;
-                    break;
-                case 5:
-                    seen5 = 1;
-                    val -= seen0 + seen1 + seen2 + seen3 + seen4;
-                    break;
-                case 6:
-                    seen6 = 1;
-                    val -= seen0 + seen1 + seen2 + seen3 + seen4 + seen5;
-                    break;
-                case 7:
-                    seen7 = 1;
-                    val -= seen0 + seen1 + seen2 + seen3 + seen4 + seen5 + seen6;
-                    break;
-                case 8:
-                    val -= seen0 + seen1 + seen2 + seen3 + seen4 + seen5 + seen6 + seen7;
-                    break;
+        int position = 2;// position 1 is paired with factor 0 and so is skipped
+        int factor = 1;
+        for (int p = 9 - 1; p > 0; p--) {
+            int val1 = (int)((puzzle << (64 - (p) * 4)) >>> 60);
+            int successors = 0;
+            for (int q = p + 1; q < 10; q++) {
+                int val2 = (int)((puzzle << (64 - (q) * 4)) >>> 60);
+                if (val1 > val2) {
+                    successors++;
+                }
             }
-
-            product *= (10 - i);
-            index += val * (maxNumPuzzles / product);
+            index += (successors * factor);
+            factor *= position;
+            position++;
         }
-
         return index;
     }
 
