@@ -2,8 +2,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class PuzzleStorage implements Iterable<Long>{
-    private final class PuzzleStorageIterator implements Iterator<Long> {
+public class PuzzleStorage implements Iterable<Puzzle>{
+    private final class PuzzleStorageIterator implements Iterator<Puzzle> {
         private int cursor;
         private final int end;
         private PuzzleStorage puzzleStorage;
@@ -15,21 +15,21 @@ public class PuzzleStorage implements Iterable<Long>{
         }
 
         public boolean hasNext() {
-            long result = 0;
+            Puzzle result = null;
 
             // find if next element exists, leave cursor there.
-            while (result == 0 && cursor < end) {
+            while (result == null && cursor < end) {
                 result = puzzleStorage.puzzles[cursor];
-                if (result == 0)
+                if (result == null)
                     cursor++;
             }
 
             return cursor < end;
         }
 
-        public Long next() {
-            long result = 0;
-            while (result == 0) {
+        public Puzzle next() {
+            Puzzle result = null;
+            while (result == null) {
                 if (!hasNext()) {
                     throw new NoSuchElementException();
                 }
@@ -49,19 +49,19 @@ public class PuzzleStorage implements Iterable<Long>{
     // There cannot exist more than 9! puzzles
     private final int maxNumPuzzles = 362880;
 
-    private long[] puzzles;
-    private long[] predecessors;
+    private Puzzle[] puzzles;
+    private Puzzle[] predecessors;
     private int numberOfElements;
 
     public PuzzleStorage() {
-        puzzles = new long[maxNumPuzzles];
-        predecessors = new long[maxNumPuzzles];
+        puzzles = new Puzzle[maxNumPuzzles];
+        predecessors = new Puzzle[maxNumPuzzles];
     }
 
-    public boolean add(long puzzle, long predecessor) {
+    public boolean add(Puzzle puzzle, Puzzle predecessor) {
         int index = index(puzzle);
 
-        if (puzzles[index] != 0) {
+        if (puzzles[index] != null) {
             return false;
         }
 
@@ -71,29 +71,28 @@ public class PuzzleStorage implements Iterable<Long>{
         return true;
     }
 
-    public long get(long puzzle) {
+    public Puzzle get(Puzzle puzzle) {
         return puzzles[index(puzzle)];
     }
 
-    public long getPredecessor(long puzzle) {
+    public Puzzle getPredecessor(Puzzle puzzle) {
         return predecessors[index(puzzle)];
     }
 
-    public boolean contains(long puzzle) {
-        return puzzles[index(puzzle)] != 0;
+    public boolean contains(Puzzle puzzle) {
+        return puzzles[index(puzzle)] != null;
     }
 
     // thanks to: http://www.geekviewpoint.com/java/numbers/permutation_index
-    private int index(long puzzle) {
+    private int index(Puzzle puzzle) {
         int index = 0;
-        int position = 2;// position 1 is paired with factor 0 and so is skipped
+        int position = 2;
         int factor = 1;
         for (int p = 9 - 1; p > 0; p--) {
-            int val1 = (int)((puzzle << (64 - (p) * 4)) >>> 60);
+            int piece = puzzle.piece(p);
             int successors = 0;
             for (int q = p + 1; q < 10; q++) {
-                int val2 = (int)((puzzle << (64 - (q) * 4)) >>> 60);
-                if (val1 > val2) {
+                if (piece > puzzle.piece(q)) {
                     successors++;
                 }
             }
@@ -104,15 +103,15 @@ public class PuzzleStorage implements Iterable<Long>{
         return index;
     }
 
-    public ArrayList<Long> getMaxDepthPuzzles() {
-        ArrayList<Long> maxPuzzles = new ArrayList<>();
+    public ArrayList<Puzzle> getMaxDepthPuzzles() {
+        ArrayList<Puzzle> maxPuzzles = new ArrayList<>();
         long maxDepth = 0;
 
-        for (long p : this) {
-            long cursorPuzzle = p;
+        for (Puzzle p : this) {
+            Puzzle cursorPuzzle = p;
             int depth = 0;
 
-            while (this.getPredecessor(cursorPuzzle) != 0) {
+            while (this.getPredecessor(cursorPuzzle) != null) {
                 cursorPuzzle = this.getPredecessor(cursorPuzzle);
                 depth++;
             }
@@ -133,7 +132,7 @@ public class PuzzleStorage implements Iterable<Long>{
         return numberOfElements;
     }
 
-    public Iterator<Long> iterator() {
+    public Iterator<Puzzle> iterator() {
         return new PuzzleStorageIterator(this);
     }
 }
