@@ -13,22 +13,22 @@ public class Puzzle {
 
     public Puzzle moveUp() {
         int zeroLoc = zeroLocation();
-        return zeroLoc < 7 ? swap(zeroLoc, zeroLoc + 3) : null;
+        return zeroLoc < 6 ? swap(zeroLoc, zeroLoc + 3) : null;
     }
 
     public Puzzle moveDown() {
         int zeroLoc = zeroLocation();
-        return zeroLoc > 3 ? swap(zeroLoc, zeroLoc - 3) : null;
+        return zeroLoc > 2 ? swap(zeroLoc, zeroLoc - 3) : null;
     }
 
     public Puzzle moveLeft() {
         int zeroLoc = zeroLocation();
-        return (zeroLoc - 1) % 3 > 0 ? swap(zeroLoc, zeroLoc - 1) : null;
+        return zeroLoc % 3 > 0 ? swap(zeroLoc, zeroLoc - 1) : null;
     }
 
     public Puzzle moveRight() {
         int zeroLoc = zeroLocation();
-        return (zeroLoc - 1) % 3 < 2 ? swap(zeroLoc, zeroLoc + 1) : null;
+        return zeroLoc % 3 < 2 ? swap(zeroLoc, zeroLoc + 1) : null;
     }
 
     @Override
@@ -43,7 +43,7 @@ public class Puzzle {
         int position = 2;
         int factor = 1;
 
-        int[] pieces = {piece(1), piece(2), piece(3), piece(4), piece(5), piece(6), piece(7), piece(8), piece(9)};
+        int[] pieces = {piece(0), piece(1), piece(2), piece(3), piece(4), piece(5), piece(6), piece(7), piece(8)};
 
         for (int p = 9 - 2; p >= 0; p--) {
             int piece = pieces[p];
@@ -64,15 +64,15 @@ public class Puzzle {
     public String toString() {
         String repr = "";
 
-        for (int i = 9; i > 1; i--) {
+        for (int i = 8; i > 0; i--) {
             repr += piece(i) + ", ";
         }
 
-        return repr + piece(1);
+        return repr + piece(0);
     }
 
     private int piece(int index) {
-        return (int)((representation << (64 - (index) * 4)) >>> 60);
+        return ((int)(representation >>> (index * 4))) & (15);
     }
 
     private int zeroLocation() {
@@ -84,32 +84,36 @@ public class Puzzle {
         long val = piece(otherLoc);
 
         // swap the value
-        long newPuzzle = representation - (val << ((otherLoc - 1) * 4)) + (val << (zeroLoc - 1) * 4);
+        long newPuzzle = representation - (val << (otherLoc * 4)) + (val << (zeroLoc * 4));
 
         // place the new location of the zero in the puzzle, and return
         return new Puzzle(((newPuzzle << 28) >>> 28) + (((long)otherLoc) << 36));
     }
 
     private long getRepresentation(int[] values) {
-        if (values.length != 9)
+        if (values.length != 9) {
             throw new IllegalArgumentException("Array `values` must be of length 9.");
+        }
 
         int[] sortedValues = values.clone();
         Arrays.sort(sortedValues);
         int[] correctValues = {0,1,2,3,4,5,6,7,8};
 
-        for (int i = 0; i < correctValues.length; i++)
-            if (sortedValues[i] != correctValues[i])
+        for (int i = 0; i < correctValues.length; i++) {
+            if (sortedValues[i] != correctValues[i]) {
                 throw new IllegalArgumentException(
                         "Array `values` must contain no duplicates and only values of 0 to 8.");
+            }
+        }
 
         long zeroPosition = 0;
 
-        for (int i = 0; i < values.length; i++)
+        for (int i = 0; i < values.length; i++) {
             if (values[i] == 0) {
-                zeroPosition = (9 - i);
+                zeroPosition = (8 - i);
                 break;
             }
+        }
 
         long puzzle = zeroPosition << 36;
 
