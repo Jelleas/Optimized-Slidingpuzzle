@@ -43,12 +43,15 @@ public class Puzzle {
         int position = 2;
         int factor = 1;
 
-        int[] pieces = {piece(0), piece(1), piece(2), piece(3), piece(4), piece(5), piece(6), piece(7), piece(8)};
+        int[] pieces = new int[9];
+        for (int i = 0; i < pieces.length; i++) {
+            pieces[i] = piece(i);
+        }
 
-        for (int p = 9 - 2; p >= 0; p--) {
+        for (int p = pieces.length - 2; p >= 0; p--) {
             int piece = pieces[p];
             int successors = 0;
-            for (int q = p + 1; q < 9; q++) {
+            for (int q = p + 1; q < pieces.length; q++) {
                 if (piece > pieces[q]) {
                     successors++;
                 }

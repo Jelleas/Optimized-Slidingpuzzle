@@ -21,6 +21,24 @@ public class Solver {
         return s.puzzleStorage;
     }
 
+    public static PuzzleStorage solveUntill(Puzzle puzzleToSolve, Puzzle solution) {
+        Solver s = new Solver();
+        s.unvisited.add(puzzleToSolve);
+        s.puzzleStorage.add(puzzleToSolve, null);
+
+        while (!s.unvisited.isEmpty()) {
+            Puzzle p = s.unvisited.pollFirst();
+
+            if (p.equals(solution)) {
+                return s.puzzleStorage;
+            }
+
+            s.move(p);
+        }
+
+        return s.puzzleStorage;
+    }
+
     private void move(Puzzle puzzle) {
         add(puzzle.moveUp(), puzzle);
         add(puzzle.moveDown(), puzzle);
