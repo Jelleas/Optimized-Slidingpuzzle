@@ -39,6 +39,7 @@ public class Main {
         Puzzle puzzle = new Puzzle(new int[] {1, 4, 2, 5, 0, 8, 3, 6, 7});
         Puzzle solution = new Puzzle(new int[] {8, 7, 6, 5, 4, 3, 2, 1, 0});
 
+        System.out.println("Benchmarking search for solution.");
         System.out.println("Starting with: " + puzzle);
         System.out.println("Searching for: " + solution);
         System.out.println("Running " + nTrials + " trials");
