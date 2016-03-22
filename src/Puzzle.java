@@ -42,11 +42,14 @@ public class Puzzle {
         int hash = 0;
         int position = 2;
         int factor = 1;
-        for (int p = 9 - 1; p > 0; p--) {
-            int piece = piece(p);
+
+        int[] pieces = {piece(1), piece(2), piece(3), piece(4), piece(5), piece(6), piece(7), piece(8), piece(9)};
+
+        for (int p = 9 - 2; p >= 0; p--) {
+            int piece = pieces[p];
             int successors = 0;
-            for (int q = p + 1; q < 10; q++) {
-                if (piece > piece(q)) {
+            for (int q = p + 1; q < 9; q++) {
+                if (piece > pieces[q]) {
                     successors++;
                 }
             }
